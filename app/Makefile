@@ -1,4 +1,7 @@
-.PHONY: image clean upload
+.PHONY: image clean upload dev
+
+dev: clean
+	go build -o app *.go
 
 app: clean
 	GOARCH=amd64 GOOS=linux go build -o app *.go
