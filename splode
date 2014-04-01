@@ -1,0 +1,18 @@
+#!/bin/bash
+conf=$1
+count=$2
+
+if [ -z "${conf}" ] || [ -z "${count}" ]; then
+    echo "Usage: $0 conf count" 1>&2
+    exit 1
+fi
+
+dir=instances/$(echo $conf | sed "s/service/instances/")
+
+[[ -d $dir ]] && rm -rf $dir
+
+mkdir -p $dir
+
+for (( i=1; i<=$count; i++ )); do
+    sed "s/__ID__/$i/g" $conf > $dir/$(echo $conf | sed "s/service$/$i.service/")
+done

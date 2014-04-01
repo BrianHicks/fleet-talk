@@ -1,0 +1,11 @@
+[Unit]
+Description=Hello __ID__
+
+[Service]
+EnvironmentFile=/etc/network.env
+ExecStartPre=/usr/bin/docker pull brianhicks/hellogo
+ExecStart=/usr/bin/docker run --rm --name %n --env HOST=%n -p ${PUBLIC_IPV4}::8080 brianhicks/hellogo
+ExecStop=/usr/bin/docker stop -t 3 %n
+
+[X-Fleet]
+X-Conflicts=hellogo.web.*.service

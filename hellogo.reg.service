@@ -1,0 +1,12 @@
+[Unit]
+Description=Announce Hello __ID__
+PartOf=hellogo.web.__ID__.service
+After=hellogo.web.__ID__.service
+
+[Service]
+Environment="ID=hellogo.web.__ID__.service"
+ExecStart=/bin/bash -c "while true; do etcdctl set /services/website/${ID} $(docker port ${ID} 8080) --ttl 60;sleep 45;done"
+ExecStop=/usr/bin/etcdctl delete /services/hello/${ID}
+
+[X-Fleet]
+X-ConditionMachineOf=hellogo.web.__ID__.service
